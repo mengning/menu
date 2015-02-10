@@ -35,6 +35,8 @@ int Quit();
 #define DESC_LEN    		1024
 #define CMD_NUM     		10
 
+char prompt[CMD_MAX_LEN] = "Input Cmd >";
+
 /* data struct and its operations */
 
 typedef struct DataNode
@@ -88,6 +90,15 @@ int Help(int argc, char *argv[])
     return 0; 
 }
 
+int SetPrompt(char * p)
+{
+    if (p == NULL)
+    {
+        return 0;
+    }
+    strcpy(prompt,p);
+    return 0;
+}
 /* add cmd to menu */
 int MenuConfig(char * cmd, char * desc, int (*handler)())
 {
@@ -109,6 +120,7 @@ int MenuConfig(char * cmd, char * desc, int (*handler)())
     return 0; 
 }
 
+
 /* Menu Engine Execute */
 int ExecuteMenu()
 {
@@ -119,7 +131,7 @@ int ExecuteMenu()
 		char *argv[CMD_MAX_ARGV_NUM];
         char cmd[CMD_MAX_LEN];
 		char *pcmd = NULL;
-        printf("Input a cmd > ");
+        printf("%s",prompt);
         /* scanf("%s", cmd); */
 		pcmd = fgets(cmd, CMD_MAX_LEN, stdin);
 		if(pcmd == NULL)

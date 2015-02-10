@@ -10,7 +10,7 @@ int Quit(int argc, char *argv[])
 
 int main()
 {
-
+    SetPrompt("MenuOS>>");
     MenuConfig("version","XXX V1.0(Menu program v1.0 inside)",NULL);
     MenuConfig("quit","Quit from XXX",Quit);
     
