@@ -119,15 +119,14 @@ int PrintMenuOS()
 int Quit(int argc, char *argv[])
 {
     /* add XXX clean ops */
-    exit(0);
 }
 
 int main()
 {
     PrintMenuOS();
     SetPrompt("MenuOS>>");
-    MenuConfig("version","XXX V1.0(Menu program v1.0 inside)",NULL);
-    MenuConfig("quit","Quit from XXX",Quit);
+    MenuConfig("version","MenuOS V1.0(Based on Linux 3.18.6)",NULL);
+    MenuConfig("quit","Quit from MenuOS",Quit);
     
     ExecuteMenu();
 }
