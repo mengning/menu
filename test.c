@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "menu.h"
 
 #define FONTSIZE 10
@@ -121,13 +122,39 @@ int Quit(int argc, char *argv[])
     /* add XXX clean ops */
 }
 
+int Time(int argc, char *argv[])
+{
+    time_t tt;
+    struct tm *t;
+    tt = time(NULL);
+    t = localtime(&tt);
+    printf("time:%d:%d:%d:%d:%d:%d\n",t->tm_year+1900, t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+    return 0;
+}
+
+int TimeAsm(int argc, char *argv[])
+{
+    time_t tt;
+    struct tm *t;
+    asm volatile(
+        "mov $0,%%ebx\n\t"
+        "mov $0xd,%%eax\n\t" 
+        "int $0x80\n\t" 
+        "mov %%eax,%0\n\t"  
+        : "=m" (tt) 
+    );
+    t = localtime(&tt);
+    printf("time:%d:%d:%d:%d:%d:%d\n",t->tm_year+1900, t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+    return 0;
+}
 int main()
 {
     PrintMenuOS();
     SetPrompt("MenuOS>>");
     MenuConfig("version","MenuOS V1.0(Based on Linux 3.18.6)",NULL);
     MenuConfig("quit","Quit from MenuOS",Quit);
-    
+    MenuConfig("time","Show System Time",Time);
+    MenuConfig("time-asm","Show System Time(asm)",TimeAsm);
     ExecuteMenu();
 }
 
