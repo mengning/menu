@@ -78,7 +78,7 @@ int ShowAllCmd(tLinkTable * head)
     tDataNode * pNode = (tDataNode*)GetLinkTableHead(head);
     while(pNode != NULL)
     {
-        printf("%s - %s\n", pNode->cmd, pNode->desc);
+        printf("    * %s - %s\n", pNode->cmd, pNode->desc);
         pNode = (tDataNode*)GetNextLinkTableNode(head,(tLinkTableNode *)pNode);
     }
     return 0;
@@ -108,7 +108,7 @@ int MenuConfig(char * cmd, char * desc, int (*handler)())
         head = CreateLinkTable();
         pNode = (tDataNode*)malloc(sizeof(tDataNode));
         pNode->cmd = "help";
-        pNode->desc = "Menu List:";
+        pNode->desc = "Menu List";
         pNode->handler = Help;
         AddLinkTableNode(head,(tLinkTableNode *)pNode);
     }
@@ -154,10 +154,9 @@ int ExecuteMenu()
         tDataNode *p = (tDataNode*)SearchLinkTableNode(head,SearchConditon,(void*)argv[0]);
         if( p == NULL)
         {
-            printf("This is a wrong cmd!\n ");
             continue;
         }
-        
+        printf("%s - %s\n", p->cmd, p->desc);
         if(p->handler != NULL) 
         { 
             p->handler(argc, argv);
