@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "menu.h"
 
 #define FONTSIZE 10
@@ -147,6 +148,33 @@ int TimeAsm(int argc, char *argv[])
     printf("time:%d:%d:%d:%d:%d:%d\n",t->tm_year+1900, t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
     return 0;
 }
+
+int Fork(int argc, char *argv[])
+{
+	int pid;
+	/* fork another process */
+	pid = fork();
+	if (pid<0) 
+	{ 
+		/* error occurred */
+		fprintf(stderr,"Fork Failed!");
+		exit(-1);
+	} 
+	else if (pid==0) 
+	{
+		/*	 child process 	*/
+    	printf("This is Child Process!\n");
+	} 
+	else 
+	{ 	
+		/* 	parent process	 */
+    	printf("This is Parent Process!\n");
+		/* parent will wait for the child to complete*/
+		wait(NULL);
+		printf("Child Complete!\n");
+	}
+}
+
 int main()
 {
     PrintMenuOS();
@@ -155,6 +183,7 @@ int main()
     MenuConfig("quit","Quit from MenuOS",Quit);
     MenuConfig("time","Show System Time",Time);
     MenuConfig("time-asm","Show System Time(asm)",TimeAsm);
+    MenuConfig("fork","Fork a new process",Fork);
     ExecuteMenu();
 }
 
