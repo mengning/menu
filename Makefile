@@ -17,8 +17,6 @@ all:	$(OBJS)
 rootfs:
 	gcc -o init linktable.c menu.c test.c -m32 -static -lpthread
 	gcc -o hello hello.c -m32 -static
-	cp hello ../rootfs/
-	cp init ../rootfs/
 	find init hello | cpio -o -Hnewc |gzip -9 > ../rootfs.img
 	qemu -kernel ../linux-3.18.6/arch/x86/boot/bzImage -initrd ../rootfs.img
 .c.o:
