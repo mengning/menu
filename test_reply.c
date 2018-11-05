@@ -152,12 +152,18 @@ int TimeAsm(int argc, char *argv[])
 #define MAX_CONNECT_QUEUE   1024
 int Replyhi()
 {
-	time_t tt;
-	struct tm *t;
-	tt = time(NULL);
-	t = localtime(&tt);
-	printf("time:%d:%d:%d:%d:%d:%d\n", t->tm_year + 1900, t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-	return 0;
+    char szBuf[MAX_BUF_LEN] = "\0";
+    char szReplyMsg[MAX_BUF_LEN] = "hi\0";
+    InitializeService();
+    while(1)
+    {
+        ServiceStart();
+        RecvMsg(szBuf); 
+        SendMsg(szReplyMsg); 
+        ServiceStop(); 
+    }
+    ShutdownService();
+    return 0;
 }
 
 int StartReplyhi(int argc, char *argv[])
