@@ -208,8 +208,8 @@ int main()
     MenuConfig("quit","Quit from MenuOS",Quit);
     MenuConfig("time","Show System Time",Time);
     MenuConfig("time-asm","Show System Time(asm)",TimeAsm);
-	MenuConfig("replyhi", "Reply hi TCP Service", StartReplyhi);
-	MenuConfig("hello", "Hello TCP Client", Hello)
+    MenuConfig("replyhi", "Reply hi TCP Service", StartReplyhi);
+    MenuConfig("hello", "Hello TCP Client", Hello);
     ExecuteMenu();
 }
 
