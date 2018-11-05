@@ -187,16 +187,11 @@ int StartReplyhi(int argc, char *argv[])
 int Hello(int argc, char *argv[])
 {
 	char szBuf[MAX_BUF_LEN] = "\0";
-	char szReplyMsg[MAX_BUF_LEN] = "hi\0";
-	InitializeService();
-	while (1)
-	{
-		ServiceStart();
-		RecvMsg(szBuf);
-		SendMsg(szReplyMsg);
-		ServiceStop();
-	}
-	ShutdownService();
+	char szMsg[MAX_BUF_LEN] = "hello\0";
+	OpenRemoteService();
+	SendMsg(szMsg);
+	RecvMsg(szBuf);
+	CloseRemoteService();
 	return 0;
 }
 
