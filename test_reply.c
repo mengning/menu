@@ -148,21 +148,58 @@ int TimeAsm(int argc, char *argv[])
     return 0;
 }
 
-#include"syswrapper.h"
+#include<stdio.h> 
+#include<arpa/inet.h> /* internet socket */
+#include<string.h>
+//#define NDEBUG
+#include<assert.h>
+
+#define PORT                5001
+#define IP_ADDR             "127.0.0.1"
+#define MAX_BUF_LEN         1024
 #define MAX_CONNECT_QUEUE   1024
 int Replyhi()
 {
-    char szBuf[MAX_BUF_LEN] = "\0";
-    char szReplyMsg[MAX_BUF_LEN] = "hi\0";
-    InitializeService();
+        char szBuf[MAX_BUF_LEN] = "\0";
+        char szReplyMsg[MAX_BUF_LEN] = "hi\0";
+        int sockfd = -1;
+        struct sockaddr_in serveraddr;
+        struct sockaddr_in clientaddr;
+        socklen_t addr_len = sizeof(struct sockaddr);
+        serveraddr.sin_family = AF_INET;
+        serveraddr.sin_port = htons(port);
+        serveraddr.sin_addr.s_addr = inet_addr(addr);
+        memset(&serveraddr.sin_zero, 0, 8);
+        sockfd = socket(PF_INET,SOCK_STREAM,0);
+        int ret = bind( sockfd, (struct sockaddr *)&serveraddr, sizeof(struct sockaddr)); 
+        if(ret == -1)
+        {
+            fprintf(stderr,"Bind Error,%s:%d\n", __FILE__,__LINE__);
+            close(sockfd);
+            return -1; 
+        }
+        listen(sockfd,MAX_CONNECT_QUEUE); 
+
     while(1)
     {
-        ServiceStart();
-        RecvMsg(szBuf); 
-        SendMsg(szReplyMsg); 
-        ServiceStop(); 
+        int newfd = accept( sockfd, (struct sockaddr *)&clientaddr, &addr_len);
+        if(newfd == -1) 
+        { 
+            fprintf(stderr,"Accept Error,%s:%d\n", __FILE__,__LINE__); 
+        } 
+        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); ]
+        if(ret > 0)
+        {
+            printf("recv \"%s\" from %s:%d\n", szBuf, (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
+        }
+        ret = send(newfd,szReplyMsg,strlen(szReplyMsg),0);
+        if(ret > 0) 
+        { 
+            printf("rely \"hi\" to %s:%d\n", (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
+        }
+        close(newfd);
     }
-    ShutdownService();
+    close(sockfd);
     return 0;
 }
 
@@ -192,12 +229,34 @@ int StartReplyhi(int argc, char *argv[])
 
 int Hello(int argc, char *argv[])
 {
-	char szBuf[MAX_BUF_LEN] = "\0";
-	char szMsg[MAX_BUF_LEN] = "hello\0";
-	OpenRemoteService();
-	SendMsg(szMsg);
-	RecvMsg(szBuf);
-	CloseRemoteService();
+        char szBuf[MAX_BUF_LEN] = "\0";
+        char szMsg[MAX_BUF_LEN] = "hello\0";
+        int sockfd = -1;
+        struct sockaddr_in serveraddr;
+        struct sockaddr_in clientaddr;
+        socklen_t addr_len = sizeof(struct sockaddr);
+        serveraddr.sin_family = AF_INET;
+        serveraddr.sin_port = htons(port);
+        serveraddr.sin_addr.s_addr = inet_addr(addr);
+        memset(&serveraddr.sin_zero, 0, 8);
+        sockfd = socket(PF_INET,SOCK_STREAM,0);
+        int ret = connect(sockfd,  (struct sockaddr *)&serveraddr,  sizeof(struct sockaddr));
+        if(ret == -1) 
+        {  
+            fprintf(stderr,"Connect Error,%s:%d\n",  __FILE__,__LINE__);
+            return -1; 
+        }
+        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); ]
+        if(ret > 0)
+        {
+            printf("recv \"%s\" from %s:%d\n", szBuf, (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
+        }
+        ret = send(newfd,szMsg,strlen(szMsg),0);
+        if(ret > 0) 
+        { 
+            printf("rely \"hi\" to %s:%d\n", (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
+        }
+	close(sockfd); 
 	return 0;
 }
 
