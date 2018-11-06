@@ -167,8 +167,8 @@ int Replyhi()
         struct sockaddr_in clientaddr;
         socklen_t addr_len = sizeof(struct sockaddr);
         serveraddr.sin_family = AF_INET;
-        serveraddr.sin_port = htons(port);
-        serveraddr.sin_addr.s_addr = inet_addr(addr);
+        serveraddr.sin_port = htons(IP_ADDR);
+        serveraddr.sin_addr.s_addr = inet_addr(IP_ADDR);
         memset(&serveraddr.sin_zero, 0, 8);
         sockfd = socket(PF_INET,SOCK_STREAM,0);
         int ret = bind( sockfd, (struct sockaddr *)&serveraddr, sizeof(struct sockaddr)); 
@@ -187,7 +187,7 @@ int Replyhi()
         { 
             fprintf(stderr,"Accept Error,%s:%d\n", __FILE__,__LINE__); 
         } 
-        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); ]
+        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); 
         if(ret > 0)
         {
             printf("recv \"%s\" from %s:%d\n", szBuf, (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
@@ -236,8 +236,8 @@ int Hello(int argc, char *argv[])
         struct sockaddr_in clientaddr;
         socklen_t addr_len = sizeof(struct sockaddr);
         serveraddr.sin_family = AF_INET;
-        serveraddr.sin_port = htons(port);
-        serveraddr.sin_addr.s_addr = inet_addr(addr);
+        serveraddr.sin_port = htons(IP_ADDR);
+        serveraddr.sin_addr.s_addr = inet_addr(IP_ADDR);
         memset(&serveraddr.sin_zero, 0, 8);
         sockfd = socket(PF_INET,SOCK_STREAM,0);
         int ret = connect(sockfd,  (struct sockaddr *)&serveraddr,  sizeof(struct sockaddr));
@@ -246,7 +246,7 @@ int Hello(int argc, char *argv[])
             fprintf(stderr,"Connect Error,%s:%d\n",  __FILE__,__LINE__);
             return -1; 
         }
-        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); ]
+        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); 
         if(ret > 0)
         {
             printf("recv \"%s\" from %s:%d\n", szBuf, (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
