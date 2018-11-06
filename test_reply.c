@@ -167,7 +167,7 @@ int Replyhi()
         struct sockaddr_in clientaddr;
         socklen_t addr_len = sizeof(struct sockaddr);
         serveraddr.sin_family = AF_INET;
-        serveraddr.sin_port = htons(IP_ADDR);
+        serveraddr.sin_port = htons(PORT);
         serveraddr.sin_addr.s_addr = inet_addr(IP_ADDR);
         memset(&serveraddr.sin_zero, 0, 8);
         sockfd = socket(PF_INET,SOCK_STREAM,0);
@@ -236,7 +236,7 @@ int Hello(int argc, char *argv[])
         struct sockaddr_in clientaddr;
         socklen_t addr_len = sizeof(struct sockaddr);
         serveraddr.sin_family = AF_INET;
-        serveraddr.sin_port = htons(IP_ADDR);
+        serveraddr.sin_port = htons(PORT);
         serveraddr.sin_addr.s_addr = inet_addr(IP_ADDR);
         memset(&serveraddr.sin_zero, 0, 8);
         sockfd = socket(PF_INET,SOCK_STREAM,0);
