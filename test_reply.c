@@ -246,12 +246,12 @@ int Hello(int argc, char *argv[])
             fprintf(stderr,"Connect Error,%s:%d\n",  __FILE__,__LINE__);
             return -1; 
         }
-        ret = recv(newfd,szBuf,MAX_BUF_LEN,0); 
+        ret = recv(sockfd,szBuf,MAX_BUF_LEN,0); 
         if(ret > 0)
         {
             printf("recv \"%s\" from %s:%d\n", szBuf, (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
         }
-        ret = send(newfd,szMsg,strlen(szMsg),0);
+        ret = send(sockfd,szMsg,strlen(szMsg),0);
         if(ret > 0) 
         { 
             printf("rely \"hi\" to %s:%d\n", (char*)inet_ntoa(clientaddr.sin_addr), ntohs(clientaddr.sin_port));                \
